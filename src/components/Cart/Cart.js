@@ -3,9 +3,27 @@ import { Link } from 'react-router-dom';
 import './Cart.css';
 const Cart = (props) => {
     const cart =props.cart
-   
-    const total = cart.reduce((total,productPrice)=>total+productPrice.price,0);
+   console.log(props);
+    // const total = cart.reduce((total,productPrice)=>total+productPrice.price,0);
+    // const total = cart.reduce((total,productIdentity)=>total+productIdentity.price*productIdentity.quantity,0);
+    debugger;
 
+    // let total = 0;
+    // for(let i = 0; i< cart.length; i++){
+    //     const product = cart[i];
+    //     total = total + product.price;
+    //     debugger;
+    // }
+
+    let total = 0;
+    for(let i = 0; i< cart.length; i++){
+        const product = cart[i];
+        total = total + product.price*product.quantity;
+        // debugger;
+    }
+
+
+   
     let shipping=0;
     if(total>=30){
         shipping=0;

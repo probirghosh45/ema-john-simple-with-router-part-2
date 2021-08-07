@@ -8,24 +8,54 @@ const Shop = () => {
   const product10 = fakeData.slice(0, 10);
   //  console.log(product10)
   const [products, setProducts] = useState(product10);
-  const [cart, setCart] = useState([]) // "[]"  blank array rekhlam karon initial stage a cart 0 product thakleo add product korla new new product array akare store hobe  
+  const [cart, setCart] = useState([])  // "[]"  blank array rekhlam karon initial stage a cart 0 product thakleo add product korla new new product array akare store hobe  
+//  console.log(products);
 
-  const handleClick = (productId)=>{
-      // console.log('Button Clicked',product);
-      const updatedCart=[...cart,productId] //akhane agee "product" naam k parameter hisabe use kore cilam akhon naam  change kore "productId" kore dilam coz "product" naam ta bar bar use korteci tai confusion aranor jonno "productId" use korlam
-      setCart(updatedCart);
 
-      const sameProduct=updatedCart.filter((productItem)=>(productItem.key===productId.key ));
-     const count = sameProduct.length;
-      addToDatabaseCart(productId.key,count) //localStorage a data Store korteci 
-    //"addtoDatabaseCart" diye database a data add korlam tarpor 
-    // "getDatabaseCart" diye database theke data restore korbo
-    //addtoDatabaseCart => fakeData theke load hocce
-     //1st a filter kore cross match korlam jate ki ki match product ache miliye nilam..
-     //2nd array ar length jene nilam
-     //tarpor count namme a pass kore dilam
+ //==========================> order summary manage without quantity <========================== 
 
-  }
+  // const handleClick = (productId)=>{
+  //     // console.log('Button Clicked',product);
+  //     const updatedCart=[...cart,productId] //akhane agee "product" naam k parameter hisabe use kore cilam akhon naam  change kore "productId" kore dilam coz "product" naam ta bar bar use korteci tai confusion aranor jonno "productId" use korlam
+  //     setCart(updatedCart);
+
+  //     const sameProduct=updatedCart.filter((productItem)=>(productItem.key===productId.key ));
+  //    const count = sameProduct.length;
+  //     addToDatabaseCart(productId.key,count) //localStorage a data Store korteci 
+  //   //"addtoDatabaseCart" diye database a data add korlam tarpor 
+  //   // "getDatabaseCart" diye database theke data restore korbo
+  //   //addtoDatabaseCart => fakeData theke load hocce
+  //    //1st a filter kore cross match korlam jate ki ki match product ache miliye nilam..
+  //    //2nd array ar length jene nilam
+  //    //tarpor count namme a pass kore dilam
+
+  // }
+
+//==========================> order summary manage with quantity <========================== 
+ 
+const handleClick = (product) =>{
+    const productToBeAddedKey = product.key;
+    const sameProductQuery = cart.find(productId => productId.key === productToBeAddedKey);
+    
+    let count = 1;
+    let updatedCart;
+    // ak product jodi more two or more times order kora hoy
+    if(sameProductQuery){
+        count = sameProductQuery.quantity + 1;
+        sameProductQuery.quantity = count;
+        const othersProductQuery = cart.filter(productIdentity => productIdentity.key !== productToBeAddedKey);
+        updatedCart = [...othersProductQuery, sameProductQuery];
+    }
+    else{
+      // ak product jodi akbar order kora hoy
+        product.quantity = 1;
+        updatedCart = [...cart, product];
+    }
+    setCart(updatedCart);
+    addToDatabaseCart(product.key, count);
+}
+
+
 
   return (
     <div className="shopping">

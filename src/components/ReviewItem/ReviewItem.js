@@ -1,8 +1,9 @@
+import { faPrescriptionBottle } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import './ReviewItem.css'
 const ReviewItem = (props) => {
-   const {img,name,quantity,key} =props.productId;
-    console.log(props)   
+   const {img,name,quantity,key,price} =props.productId;
+    console.log(props.productId)   
 
     return (
         <div className="review__product__container">
@@ -14,6 +15,7 @@ const ReviewItem = (props) => {
             <div>
                 <h2>{name}</h2>
                 <p>Quantity : {quantity}</p>
+                <p>Price : {price} </p>
                 <button onClick={()=>(props.removeSelectedProduct(key))} type="button" class="btn btn-warning">Remove Item</button>
             </div>
 
