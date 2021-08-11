@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import fakeData from "../../fakeData";
-import { addToDatabaseCart } from "../../utilities/databaseManager";
+import { addToDatabaseCart,getDatabaseCart } from "../../utilities/databaseManager";
 import Cart from "../Cart/Cart";
 import Product from "../Product/Product";
 import './Shop.css';
@@ -54,6 +54,21 @@ const handleClick = (product) =>{
     setCart(updatedCart);
     addToDatabaseCart(product.key, count);
 }
+
+//==========================> load data from local storage <========================== 
+
+useEffect(()=>{
+  const savedCart = getDatabaseCart();
+  const productKeys = Object.keys(savedCart);
+  const previousCart = productKeys.map( existingKey => {
+      const product = fakeData.find( pd => pd.key === existingKey);
+      product.quantity = savedCart[existingKey];
+      return product;
+  } )
+  setCart(previousCart);
+}, [])
+
+
 
 
 
